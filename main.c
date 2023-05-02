@@ -92,7 +92,7 @@ float voltage1;
 float raw;
 float voltage;
 
-
+//Delay in the execution of a program for a specified number of milliseconds.
 void delay_ms(unsigned int n) {
     int x;
     for (x = 0; x < n; x++) {
@@ -102,13 +102,14 @@ void delay_ms(unsigned int n) {
 
 #define STARTVALUE  59286
 
+//reload the value of Timer0 in a microcontroller with a pre-defined starting value. 
 void reloadTimer0(void) {
     uint16_t startvalue = STARTVALUE;
     TMR1H = startvalue >> 8;
     TMR1L = startvalue & 0xFF;
 }
 
-
+//Interrupt Service Routine (ISR) that is called when an external interrupt on INT2 pin is detected in a microcontroller.
 void EXT_Int2_isr(void) {
     delay_ms(250);
     INTCON3bits.INT2IF = 0;
@@ -119,12 +120,14 @@ void EXT_Int2_isr(void) {
     } //0-s 1-m 2-h
 }
 
+//when an external interrupt on INT1 pin is detected in a microcontroller.
 void EXT_Int1_isr(void) {
     delay_ms(250);
     INTCON3bits.INT1IF = 0;
     top ^= 1; // use XOR to toggle top between 0 and 1
 }
 
+//when a Timer0 overflow interrupt is generated in a microcontroller
 void Timer0_isr() {
     INTCONbits.TMR0IF = 0;
     if (top == 1) {
@@ -149,6 +152,7 @@ char x;
 int flagre;
 int count = 0;
 
+//when a data byte is received on a serial port of a microcontroller.
 void RX_isr(void) {
     x = RCREG;
     if (x == '<' || x == '>') {
@@ -319,6 +323,7 @@ void RX_isr(void) {
     }
 }
 
+//Initializes the input/output (I/O) ports of a microcontroller.
 void setupPorts(void) {
     ADCON0 = 0x00;
     ADCON1 = 0b00001100; //3 analog input
